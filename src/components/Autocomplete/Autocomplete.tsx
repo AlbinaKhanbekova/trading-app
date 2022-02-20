@@ -8,11 +8,13 @@ import styles from "./Autocomplete.module.css";
 
 type AutoCompleteProps = {
   data: SymbolListItem[];
+  placeholder?: string;
   onSelect?: (id: string) => void;
 };
 
 export const Autocomplete = ({
   data,
+  placeholder = "",
   onSelect: onSelectHandler,
 }: AutoCompleteProps) => {
   const [value, setValue] = useState("");
@@ -48,8 +50,13 @@ export const Autocomplete = ({
 
   return (
     <div className={styles.container}>
-      <input value={value} onChange={handleChange} className={styles.input} />
-      {open && (
+      <input
+        value={value}
+        onChange={handleChange}
+        className={styles.input}
+        placeholder={placeholder}
+      />
+      {open && searchResult.length > 0 && (
         <div className={styles.dropdown} onBlur={clickOutside}>
           <List>
             {searchResult.map((item) => (
