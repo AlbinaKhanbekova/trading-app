@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import useDebounce from '../../hooks/useDebounce'
-import { SymbolListItem } from '../../types/symbols'
+import { CompanySearchItem } from '../../types'
 import { List } from '../List/List'
 import { ListItem } from '../ListItem/ListItem'
 
 import styles from './Autocomplete.module.css'
 
 type AutoCompleteProps = {
-  data: SymbolListItem[]
+  data: CompanySearchItem[]
   placeholder?: string
   onSelect?: (id: string) => void
 }
@@ -19,7 +19,7 @@ export const Autocomplete = ({
 }: AutoCompleteProps) => {
   const [value, setValue] = useState('')
   const [open, setOpen] = useState(false)
-  const [searchResult, setSearchResult] = useState<SymbolListItem[]>([])
+  const [searchResult, setSearchResult] = useState<CompanySearchItem[]>([])
   const debouncedValue = useDebounce<string>(value)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -30,7 +30,7 @@ export const Autocomplete = ({
       const result = data.filter(
         (d) =>
           d.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-          d.name.toLowerCase().includes(debouncedValue.toLowerCase())
+          d.companyName.toLowerCase().includes(debouncedValue.toLowerCase())
       )
       setSearchResult(result.slice(0, 9))
       setOpen(true)
@@ -39,13 +39,11 @@ export const Autocomplete = ({
     }
   }, [data, debouncedValue])
 
-  const clickOutside = () => setOpen(false)
-
-  const onSelect = (item: SymbolListItem) => () => {
+  const onSelect = (item: CompanySearchItem) => () => {
     if (onSelectHandler) {
       onSelectHandler(item.symbol)
     }
-    clickOutside()
+    setOpen(false)
   }
 
   return (
@@ -57,12 +55,12 @@ export const Autocomplete = ({
         placeholder={placeholder}
       />
       {open && searchResult.length > 0 && (
-        <div className={styles.dropdown} onBlur={clickOutside}>
+        <div className={styles.dropdown}>
           <List>
             {searchResult.map((item) => (
               <ListItem
                 key={item.symbol}
-                title={item.name}
+                title={item.companyName}
                 subtitle={item.symbol}
                 onClick={onSelect(item)}
               />

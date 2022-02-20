@@ -1,26 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { Favorite } from '../../types/favorites'
+import { FavoriteItem } from '../../types'
 
 interface FavoritesState {
-  favorites: Favorite[]
+  list: FavoriteItem[]
 }
 
 const initialState: FavoritesState = {
-  favorites: [{ symbol: 'AAPL', company: 'Apple' }],
+  list: [],
 }
 
 export const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    addToFavorites: (state, action: PayloadAction<Favorite>) => {
-      state.favorites = [...state.favorites, action.payload]
+    addToFavorites: (state, action: PayloadAction<FavoriteItem>) => {
+      state.list = [...state.list, action.payload]
     },
-    removeFromFavorites: (state, action: PayloadAction<Favorite>) => {
-      state.favorites = state.favorites.filter(
-        (f) => f.symbol !== action.payload.symbol
-      )
+    removeFromFavorites: (state, action: PayloadAction<FavoriteItem>) => {
+      state.list = state.list.filter((f) => f.symbol !== action.payload.symbol)
     },
   },
 })

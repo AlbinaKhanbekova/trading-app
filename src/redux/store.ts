@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import favoritesReducer from './slices/favorites.slice'
-import symbolsReducer from './slices/symbol.slice'
+import stockReducer from './slices/stock.slice'
 
 import { loadStateFromStorage, saveStateToStorage } from './localStorage'
 
@@ -9,7 +9,7 @@ const preloadedState = loadStateFromStorage()
 export const store = configureStore({
   reducer: {
     favorites: favoritesReducer,
-    symbols: symbolsReducer,
+    stock: stockReducer,
   },
   preloadedState,
 })

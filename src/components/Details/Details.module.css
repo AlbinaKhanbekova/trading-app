@@ -1,6 +1,30 @@
 .container {
+  display: flex;
+  align-items: flex-start;
   width: 100%;
+  min-width: 600px;
   border: 1px solid rgb(190, 190, 190);
   border-radius: 5px;
   padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.quote {
+  width: 30%;
+}
+
+.logo {
+  width: 120px;
+  margin-right: 10px;
+}
+
+.quote,
+.name {
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  display: block;
+  font-size: 36px;
 }

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Autocomplete, Details } from '../../components'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { fetchSymbols } from '../../redux/slices/symbol.slice'
+import { addToFavorites } from '../../redux/slices/favorites.slice'
+import { fetchSymbols } from '../../redux/slices/stock.slice'
 import { getCompany, getLogo, getQuote } from '../../services/api'
+import { FavoriteItem } from '../../types'
 
 import styles from './Home.module.css'
 
@@ -10,7 +12,7 @@ export const Home = () => {
   const [symbol, setSymbol] = useState<string | null>(null)
   const [detailsData, setDetailsData] = useState<any>(null)
   const dispatch = useAppDispatch()
-  const list = useAppSelector((state) => state.symbols.list)
+  const list = useAppSelector((state) => state.stock.list)
 
   useEffect(() => {
     if (!list.length) {
@@ -37,10 +39,12 @@ export const Home = () => {
             console.log(companyData, quoteData)
             setDetailsData({
               companyName: companyData.companyName,
+              description: companyData.description,
               symbol: companyData.symbol,
               sector: companyData.sector,
               country: companyData.country,
               close: quoteData.close,
+              closeTime: quoteData.closeTime,
               logoUrl: logoData.url,
             })
           } else {
@@ -55,6 +59,11 @@ export const Home = () => {
     fetchDetails()
   }, [symbol])
 
+  const onClick = (item: FavoriteItem) => {
+    console.log(item)
+    dispatch(addToFavorites(item))
+  }
+
   const onSelect = (value: string) => setSymbol(value)
   return (
     <div className={styles.container}>
@@ -65,8 +74,11 @@ export const Home = () => {
         onSelect={onSelect}
         placeholder="Company name or symbol"
       />
-      {symbol}
-      {detailsData && <Details data={detailsData} />}
+      {detailsData && (
+        <div className={styles.details}>
+          <Details data={detailsData} addToFavorites={onClick} />
+        </div>
+      )}
     </div>
   )
 }
