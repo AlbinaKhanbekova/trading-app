@@ -7,7 +7,7 @@ interface FavoritesState {
 }
 
 const initialState: FavoritesState = {
-  favorites: [],
+  favorites: [{ symbol: "AAPL", company: "Apple" }],
 };
 
 export const favoritesSlice = createSlice({

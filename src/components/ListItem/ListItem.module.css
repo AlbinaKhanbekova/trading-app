@@ -1,0 +1,28 @@
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px #ccc solid;
+  /* border-radius: 10px; */
+  padding: 5px 10px;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.list-item:hover {
+  background-color: #eee;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #444;
+  margin: 5px 0;
+}
