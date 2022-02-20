@@ -1,10 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import favoritesReducer from "./slices/favorites.slice";
-import symbolsReducer from "./slices/symbol.slice";
+import { configureStore } from '@reduxjs/toolkit'
+import favoritesReducer from './slices/favorites.slice'
+import symbolsReducer from './slices/symbol.slice'
 
-import { loadStateFromStorage, saveStateToStorage } from "./localStorage";
+import { loadStateFromStorage, saveStateToStorage } from './localStorage'
 
-const preloadedState = loadStateFromStorage();
+const preloadedState = loadStateFromStorage()
 
 export const store = configureStore({
   reducer: {
@@ -12,12 +12,12 @@ export const store = configureStore({
     symbols: symbolsReducer,
   },
   preloadedState,
-});
+})
 
 store.subscribe(() => {
-  saveStateToStorage(store.getState());
-});
+  saveStateToStorage(store.getState())
+})
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch

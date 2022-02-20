@@ -1,8 +1,8 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Header } from "./components";
-import { Favorites } from "./pages/Favorites";
-import { Home } from "./pages/Home";
+import React from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Header } from './components'
+import { Favorites } from './pages/Favorites'
+import { Home } from './pages/Home'
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         </Routes>
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 export const Header = () => {
   return (
@@ -12,5 +12,5 @@ export const Header = () => {
         </li>
       </ul>
     </nav>
-  );
-};
+  )
+}

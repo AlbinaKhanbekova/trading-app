@@ -23,11 +23,12 @@ export const Home = () => {
     const fetchDetails = async () => {
       if (symbol) {
         try {
-          const [companyResponse, quoteResponse, logoResponse] = await Promise.all([
-            getCompany(symbol),
-            getQuote(symbol),
-            getLogo(symbol),
-          ])
+          const [companyResponse, quoteResponse, logoResponse] =
+            await Promise.all([
+              getCompany(symbol),
+              getQuote(symbol),
+              getLogo(symbol),
+            ])
           if (companyResponse.ok && quoteResponse.ok && logoResponse.ok) {
             const companyData = await companyResponse.json()
             const quoteData = await quoteResponse.json()
@@ -59,7 +60,11 @@ export const Home = () => {
     <div className={styles.container}>
       <h1>Welcome to Trading App</h1>
       <p>You can search for companies and their details</p>
-      <Autocomplete data={list} onSelect={onSelect} placeholder="Company name or symbol" />
+      <Autocomplete
+        data={list}
+        onSelect={onSelect}
+        placeholder="Company name or symbol"
+      />
       {symbol}
       {detailsData && <Details data={detailsData} />}
     </div>

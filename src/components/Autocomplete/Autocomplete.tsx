@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
-import useDebounce from "../../hooks/useDebounce";
-import { SymbolListItem } from "../../types/symbols";
-import { List } from "../List/List";
-import { ListItem } from "../ListItem/ListItem";
+import React, { useEffect, useState } from 'react'
+import useDebounce from '../../hooks/useDebounce'
+import { SymbolListItem } from '../../types/symbols'
+import { List } from '../List/List'
+import { ListItem } from '../ListItem/ListItem'
 
-import styles from "./Autocomplete.module.css";
+import styles from './Autocomplete.module.css'
 
 type AutoCompleteProps = {
-  data: SymbolListItem[];
-  placeholder?: string;
-  onSelect?: (id: string) => void;
-};
+  data: SymbolListItem[]
+  placeholder?: string
+  onSelect?: (id: string) => void
+}
 
 export const Autocomplete = ({
   data,
-  placeholder = "",
+  placeholder = '',
   onSelect: onSelectHandler,
 }: AutoCompleteProps) => {
-  const [value, setValue] = useState("");
-  const [open, setOpen] = useState(false);
-  const [searchResult, setSearchResult] = useState<SymbolListItem[]>([]);
-  const debouncedValue = useDebounce<string>(value);
+  const [value, setValue] = useState('')
+  const [open, setOpen] = useState(false)
+  const [searchResult, setSearchResult] = useState<SymbolListItem[]>([])
+  const debouncedValue = useDebounce<string>(value)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setValue(e.target.value);
+    setValue(e.target.value)
 
   useEffect(() => {
     if (debouncedValue.length) {
@@ -31,22 +31,22 @@ export const Autocomplete = ({
         (d) =>
           d.symbol.toLowerCase().includes(debouncedValue.toLowerCase()) ||
           d.name.toLowerCase().includes(debouncedValue.toLowerCase())
-      );
-      setSearchResult(result.slice(0, 9));
-      setOpen(true);
+      )
+      setSearchResult(result.slice(0, 9))
+      setOpen(true)
     } else {
-      setSearchResult([]);
+      setSearchResult([])
     }
-  }, [data, debouncedValue]);
+  }, [data, debouncedValue])
 
-  const clickOutside = () => setOpen(false);
+  const clickOutside = () => setOpen(false)
 
   const onSelect = (item: SymbolListItem) => () => {
     if (onSelectHandler) {
-      onSelectHandler(item.symbol);
+      onSelectHandler(item.symbol)
     }
-    clickOutside();
-  };
+    clickOutside()
+  }
 
   return (
     <div className={styles.container}>
@@ -71,5 +71,5 @@ export const Autocomplete = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}

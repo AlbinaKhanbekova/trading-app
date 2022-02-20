@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
-import styles from "./Details.module.css";
+import styles from './Details.module.css'
 
 type DetailsProps = {
-  data: any;
-};
+  data: any
+}
 
 export const Details = ({ data }: DetailsProps) => {
   return (
@@ -22,5 +22,5 @@ export const Details = ({ data }: DetailsProps) => {
         <span>${data.close}</span>
       </div>
     </div>
-  );
-};
+  )
+}
