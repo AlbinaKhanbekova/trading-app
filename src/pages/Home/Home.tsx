@@ -1,70 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Autocomplete, Details } from '../../components'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { addToFavorites } from '../../redux/slices/favorites.slice'
-import { fetchSymbols } from '../../redux/slices/stock.slice'
-import { getCompany, getLogo, getQuote } from '../../services/api'
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from '../../redux/slices/favorites.slice'
+import {
+  fetchSymbols,
+  fetchStockDetails,
+  updateStockDetails,
+  clearStockDetails,
+} from '../../redux/slices/stock.slice'
 import { FavoriteItem } from '../../types'
 
 import styles from './Home.module.css'
 
 export const Home = () => {
-  const [symbol, setSymbol] = useState<string | null>(null)
-  const [detailsData, setDetailsData] = useState<any>(null)
   const dispatch = useAppDispatch()
+  const detailsData = useAppSelector((state) => state.stock.stockDetails)
   const list = useAppSelector((state) => state.stock.list)
+  const loading = useAppSelector((state) => state.stock.loading)
 
   useEffect(() => {
     if (!list.length) {
       // load once list of sybmols and companies names to enable autocomplete functionality
       dispatch(fetchSymbols())
     }
+
+    return () => {
+      dispatch(clearStockDetails())
+    }
   }, [dispatch, list])
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (symbol) {
-        try {
-          const [companyResponse, quoteResponse, logoResponse] =
-            await Promise.all([
-              getCompany(symbol),
-              getQuote(symbol),
-              getLogo(symbol),
-            ])
-          if (companyResponse.ok && quoteResponse.ok && logoResponse.ok) {
-            const companyData = await companyResponse.json()
-            const quoteData = await quoteResponse.json()
-            const logoData = await logoResponse.json()
-
-            console.log(companyData, quoteData)
-            setDetailsData({
-              companyName: companyData.companyName,
-              description: companyData.description,
-              symbol: companyData.symbol,
-              sector: companyData.sector,
-              country: companyData.country,
-              close: quoteData.close,
-              closeTime: quoteData.closeTime,
-              logoUrl: logoData.url,
-            })
-          } else {
-            throw new Error()
-          }
-        } catch (err) {
-          console.log(err)
-        }
+  const onClick = (item: FavoriteItem) => {
+    if (detailsData) {
+      dispatch(
+        updateStockDetails({
+          ...detailsData,
+          isFavorite: !detailsData.isFavorite,
+        })
+      )
+      if (detailsData.isFavorite) {
+        dispatch(removeFromFavorites(item))
+      } else {
+        dispatch(addToFavorites(item))
       }
     }
-
-    fetchDetails()
-  }, [symbol])
-
-  const onClick = (item: FavoriteItem) => {
-    console.log(item)
-    dispatch(addToFavorites(item))
   }
 
-  const onSelect = (value: string) => setSymbol(value)
+  const onSelect = (value: string) => {
+    if (value) {
+      dispatch(fetchStockDetails(value))
+    }
+  }
   return (
     <div className={styles.container}>
       <h1>Welcome to Trading App</h1>
@@ -74,11 +62,13 @@ export const Home = () => {
         onSelect={onSelect}
         placeholder="Company name or symbol"
       />
-      {detailsData && (
-        <div className={styles.details}>
-          <Details data={detailsData} addToFavorites={onClick} />
-        </div>
-      )}
+      <div className={styles.details}>
+        <Details
+          data={detailsData}
+          addToFavorites={onClick}
+          loading={loading}
+        />
+      </div>
     </div>
   )
 }

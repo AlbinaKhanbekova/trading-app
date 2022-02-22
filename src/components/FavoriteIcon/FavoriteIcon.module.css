@@ -1,0 +1,15 @@
+.button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s;
+  transform: scale(1);
+}
+.icon:hover {
+  transform: scale(1.05);
+  transition: all 0.1s;
+}
+
+.icon path {
+  fill: #ffcb3c;
+}

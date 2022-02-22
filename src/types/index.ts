@@ -9,14 +9,16 @@ export type CompanySearchItem = {
   companyName: string
 }
 
-export type CompanyDetails = {
+export type StockDetails = {
   companyName: string
   description: string
   symbol: string
   sector: string
   country: string
   close: number
+  latestPrice: number
   logoUrl: string
+  isFavorite?: boolean
 }
 
 export type SymbolItemResponse = { symbol: string; name: string }

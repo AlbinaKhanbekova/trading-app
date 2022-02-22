@@ -3,7 +3,7 @@ import React from 'react'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { removeFromFavorites } from '../../redux/slices/favorites.slice'
 
-import { List, ListItem } from '../../components'
+import { FavoriteIcon, List, ListItem } from '../../components'
 import { FavoriteItem } from '../../types'
 
 import styles from './Favorites.module.css'
@@ -24,7 +24,9 @@ export const Favorites = () => {
               key={item.symbol}
               title={item.companyName}
               subtitle={item.symbol}
-              actionIcon={<div onClick={() => removeItem(item)}>X</div>}
+              actionIcon={
+                <FavoriteIcon isFavorite onClick={() => removeItem(item)} />
+              }
             />
           ))
         ) : (
