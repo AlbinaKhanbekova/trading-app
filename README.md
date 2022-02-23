@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Getting Started with Trading App (Create React App)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Run project:
+
+#### 1. Run `cp .env .env.local`
+
+#### 2. Add our own IEX Cloud token to `.env.local` (`REACT_APP_API_TOKEN` variable)
+
+#### 3. Run `npm ci`
+
+#### 4. Run `npm start`
 
 ## Available Scripts
 
