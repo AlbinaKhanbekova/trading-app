@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as reactRedux from 'react-redux'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useAppSelector } from '../../redux/hooks'
 
@@ -16,6 +17,9 @@ describe('Favorites page', () => {
   const mockStore = {
     favorites: {
       list: [],
+    },
+    stock: {
+      stockDetails: {},
     },
   }
 
@@ -32,13 +36,10 @@ describe('Favorites page', () => {
   })
 
   it('renders empty page', async () => {
-    render(<Favorites />)
-
-    expect(
-      screen.getByText(
-        "You don't have favorites yet. You can add them from Home page"
-      )
-    ).toBeInTheDocument()
+    const { container } = render(<Favorites />, { wrapper: MemoryRouter })
+    expect(container).toHaveTextContent(
+      `You don't have favorites yet. You can add them from Home page`
+    )
   })
 
   it('renders page with one item', async () => {
@@ -51,6 +52,9 @@ describe('Favorites page', () => {
               companyName: 'Test name',
             },
           ],
+        },
+        stock: {
+          stockDetails: {},
         },
       })
     )
@@ -71,6 +75,9 @@ describe('Favorites page', () => {
             },
           ],
         },
+        stock: {
+          stockDetails: {},
+        },
       })
     )
     const dummyDispatch = jest.fn()
@@ -84,5 +91,33 @@ describe('Favorites page', () => {
       payload: { companyName: 'Test name', symbol: 'TEST' },
       type: 'favorites/removeFromFavorites',
     })
+  })
+
+  it('row click should display stock details', async () => {
+    useAppSelector.mockImplementation((callback) =>
+      callback({
+        favorites: {
+          list: [
+            {
+              symbol: 'TEST',
+              companyName: 'Test name',
+            },
+          ],
+        },
+        stock: {
+          stockDetails: {
+            close: 155,
+          },
+        },
+      })
+    )
+    const dummyDispatch = jest.fn()
+    useDispatchMock.mockReturnValue(dummyDispatch)
+    render(<Favorites />)
+
+    const buttonEl = screen.getByText('TEST')
+    userEvent.click(buttonEl)
+
+    expect(screen.getByText('$155')).toBeInTheDocument()
   })
 })

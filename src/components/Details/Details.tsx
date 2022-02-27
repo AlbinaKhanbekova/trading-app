@@ -2,15 +2,23 @@ import React from 'react'
 import { FavoriteItem, StockDetails } from '../../types'
 
 import styles from './Details.module.css'
-import { FavoriteIcon } from '../FavoriteIcon/FavoriteIcon'
+import { FavoriteIcon, Loading } from '../../components'
 
 type DetailsProps = {
   loading?: boolean
   data: StockDetails | null
-  addToFavorites: (item: FavoriteItem) => void
+  className?: string
+  toggleFavorites?: (item: FavoriteItem) => void
+  favIcon?: boolean
 }
 
-export const Details = ({ data, loading, addToFavorites }: DetailsProps) => {
+export const Details = ({
+  data,
+  loading,
+  toggleFavorites,
+  className = '',
+  favIcon,
+}: DetailsProps) => {
   const onClick = () => {
     if (data) {
       const item: FavoriteItem = {
@@ -18,7 +26,7 @@ export const Details = ({ data, loading, addToFavorites }: DetailsProps) => {
         companyName: data.companyName,
         logoUrl: data.logoUrl,
       }
-      addToFavorites(item)
+      if (toggleFavorites) toggleFavorites(item)
     }
   }
 
@@ -26,10 +34,12 @@ export const Details = ({ data, loading, addToFavorites }: DetailsProps) => {
   return (
     <>
       {loading ? (
-        <p>loading...</p>
+        <div className={styles.loading}>
+          <Loading />
+        </div>
       ) : (
         data && (
-          <div className={styles.container}>
+          <div className={`${styles.container} ${className}`}>
             <img className={styles.logo} src={data.logoUrl} alt="Logo" />
             <div className={styles.info}>
               <div className={styles.name}>
@@ -53,12 +63,14 @@ export const Details = ({ data, loading, addToFavorites }: DetailsProps) => {
             <div className={styles.right}>
               <span className={styles.price}>${price}</span>
 
-              <button className={styles.button} onClick={onClick}>
-                <FavoriteIcon
-                  className={styles.icon}
-                  isFavorite={data.isFavorite}
-                />
-              </button>
+              {favIcon && (
+                <button className={styles.button} onClick={onClick}>
+                  <FavoriteIcon
+                    className={styles.icon}
+                    isFavorite={data.isFavorite}
+                  />
+                </button>
+              )}
             </div>
           </div>
         )

@@ -11,10 +11,16 @@ type FavoriteIconProps = {
 
 export const FavoriteIcon = ({
   isFavorite,
-  className,
+  className = '',
   ...rest
 }: FavoriteIconProps) => {
   const Icon = isFavorite ? StarIcon : StarOutlineIcon
 
-  return <Icon className={`${styles.icon} ${className}`} {...rest} />
+  return (
+    <Icon
+      title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+      className={`${styles.icon} ${className}`}
+      {...rest}
+    />
+  )
 }

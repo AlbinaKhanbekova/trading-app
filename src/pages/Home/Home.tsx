@@ -62,13 +62,13 @@ export const Home = () => {
         onSelect={onSelect}
         placeholder="Company name or symbol"
       />
-      <div className={styles.details}>
-        <Details
-          data={detailsData}
-          addToFavorites={onClick}
-          loading={loading}
-        />
-      </div>
+      <Details
+        className={styles.details}
+        data={detailsData}
+        toggleFavorites={onClick}
+        loading={loading}
+        favIcon
+      />
     </div>
   )
 }
